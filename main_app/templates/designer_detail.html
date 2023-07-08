@@ -1,0 +1,82 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="detail__img">
+    <img src="{{designer.img}}" alt="{{designer.name}}" />
+</div>
+<div class="detail__name">
+    {% if designer.verified_designer %}
+    <div class="icon-text">
+        <span class="icon has-text-info">
+            <i class="fas fa-check-circle"></i>
+        </span>
+        <span>Verified</span>
+    </div>
+    {% endif %}
+    <h1 class="title">{{designer.name}}</h1>
+</div>
+<div class="detail__container">
+    <div class="buttons">
+        <a href="{% url 'designer_update' designer.pk %}" class="button is-info"> Updates
+            <span class="icon">
+                <i class="fas fa-edit"></i>
+            </span>
+        </a>
+        <a href="{% url 'designer_delete' designer.pk %}" class="button is-danger">Delete
+            <span class="icon">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+        </a>
+    </div>
+    <div class="detail__about">
+        <!-- inside container -->
+  <div class="detail__items mb-5">
+    <h3 class="title is-3">Items</h3>
+    <form class="mb-5" action="{% url 'item_create' designer.pk %}" method="post">
+        {% csrf_token %}
+        <div class="field has-addons">
+            <div class="control">
+                <input
+                    class="input"
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input
+                    class="input"
+                    type="number"
+                    name="length"
+                    placeholder="Length in Seconds"
+                    min="1"
+                    required
+                />
+            </div>
+            <div class="control">
+                <input class="button is-primary" type="submit" value="Add Item" />
+            </div>
+        </div>
+    </form>
+    {% for item in designer.items.all %}
+    <div class="item">
+      <span>{{forloop.counter}}</span>
+      <span><b>{{item.title}}</b></span>
+      <span>{{item.length}}</span>
+    </div>
+		{% empty %}
+    <article class="message">
+      <div class="message-header">
+        <p>No Items Available</p>
+      </div>
+    </article>
+
+    {% endfor %}
+  </div>
+<!--  above about section  -->
+        <h4 class="title is-4">About</h4>
+        <p>{{designer.bio}}</p>
+    </div>
+</div>
+
+{% endblock %}

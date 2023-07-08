@@ -1,0 +1,30 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Featured Items </h2>
+<div class="gallery">
+    {% for designer in designers %}
+    <a href="{% url 'designer_detail' designer.pk %}">
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-square">
+            <img src="{{designer.image}}" alt="{{designer.name}}" />
+          </figure>
+        </div>
+        <div class="card-header">
+          <p class="card-header-title">{{designer.name}}</p>
+        </div>
+      </div>
+    </a>
+      {% empty %}
+    <article class="message">
+      <div class="message-header">
+        <p>No Designers Available</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+{% endblock %}
+
